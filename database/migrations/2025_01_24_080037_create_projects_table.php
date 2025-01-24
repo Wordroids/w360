@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('project_name');
+            $table->text('description');
+            $table->enum('visibility', ['public', 'private'])->default('public');
             $table->timestamps();
         });
     }

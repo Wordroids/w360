@@ -13,7 +13,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $projects = Project::paginate(10); // Paginate results (10 per page)
+        return view('pages.projects.index', compact('projects'));
     }
 
     /**
@@ -29,7 +30,15 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $request->validate([
+            'project_name' => 'required|string|max:255|unique:projects',
+            'description' => 'required',
+            'visibility' => 'required|in:public,private',
+        ]);
+
+        Project::create($request->all());
+
+        return redirect()->route('projects.index')->with('success', 'Project created successfully!');
     }
 
     /**
@@ -43,18 +52,32 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit($id)
     {
-        //
+        $project = Project::findOrFail($id); // Fetch the project by ID or fail with 404
+        return view('pages.projects.edit', compact('project')); // Pass project data to the view
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProjectRequest $request, Project $project)
-    {
-        //
-    }
+   // Handle the update request
+   public function update(Request $request, $id)
+   {
+       // Validate the request data
+       $request->validate([
+           'project_name' => 'required|string|max:255',
+           'description' => 'required|string',
+           'visibility' => 'required|in:public,private',
+       ]);
+
+       // Find the project and update it
+       $project = Project::findOrFail($id);
+       $project->update($request->all());
+
+       // Redirect to the project list with a success message
+       return redirect()->route('projects.index')->with('success', 'Project updated successfully!');
+   }
 
     /**
      * Remove the specified resource from storage.

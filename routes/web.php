@@ -28,7 +28,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
         Route::patch('/users/{user}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+
+
+        // Projects Routes 
+        Route::get('/projects', [App\Http\Controllers\ProjectController::class, 'index'])->name('projects.index');
+        Route::get('/projects/create', [App\Http\Controllers\ProjectController::class, 'create'])->name('projects.create');
+        Route::post('/projects', [App\Http\Controllers\ProjectController::class, 'store'])->name('projects.store');
+        Route::get('/projects/{project}/edit', [App\Http\Controllers\ProjectController::class, 'edit'])->name('projects.edit');
+        Route::patch('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'update'])->name('projects.update');
+        Route::delete('/projects/{project}', [App\Http\Controllers\ProjectController::class, 'destroy'])->name('projects.destroy');
+
         
+
     });
 });
 
